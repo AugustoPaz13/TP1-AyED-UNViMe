@@ -2,10 +2,16 @@ import java.util.Scanner;
 
 public class Main {
     private static final Scanner consola = new Scanner(System.in);
+    // Definición de constantes
+    private static final int TAMANIO_INVENTARIO = 1000;
+    private static final String ID_VACIO = "000x0";
+    private static final String NOMBRE_VACIO = "Vacio";
+    private static final double PRECIO_VACIO = 0.0;
+    private static final int STOCK_VACIO = 0;
 
     public static void main(String[] args) {
 
-        Articulo[] inventario = new Articulo[1000];
+        Articulo[] inventario = new Articulo[TAMANIO_INVENTARIO];
         inicializarInventario(inventario);
         int op = 0;
         do {
@@ -42,15 +48,15 @@ public class Main {
     }
 
     public static void inicializarInventario(Articulo[] inventario){
-        for(int i=0;i<1000;i++){
-            inventario[i] = new Articulo("000x0", "Vacio", "Vacio", 0.0,0);
+        for(int i=0;i<TAMANIO_INVENTARIO;i++){
+            inventario[i] = new Articulo(ID_VACIO, NOMBRE_VACIO, NOMBRE_VACIO, PRECIO_VACIO, STOCK_VACIO);
         }
     }
 
     public static void ingresarArticulo(Articulo[] inventario){
 
         for (int i=0;i<1000;i++){
-            if(inventario[i].getId().equals("000x0")){
+            if(inventario[i].getId().equals(ID_VACIO)){
                 inventario[i].setId(solicitarIdValido());
                 inventario[i].setNombre(solicitarNombreValido());
                 inventario[i].setMarca(solicitarNombreMarcaValido());
@@ -70,8 +76,8 @@ public class Main {
 
     public static void verArticulos(Articulo[] inventario){
         int contador = 0;
-        for (int i=0;i<1000;i++){
-            if(!inventario[i].getId().equals("000x0")){
+        for (int i=0;i<TAMANIO_INVENTARIO;i++){
+            if(!inventario[i].getId().equals(ID_VACIO)){
                 System.out.println(inventario[i]);
                 contador++;
             }
@@ -89,7 +95,7 @@ public class Main {
         System.out.print("Ingrese el ID del articulo a eliminar: ");
         String idAEncontrar = consola.nextLine();
 
-        for (int i=0;i<1000;i++){
+        for (int i=0;i<TAMANIO_INVENTARIO;i++){
             if(inventario[i].getId().equalsIgnoreCase(idAEncontrar)){
                 int op = 0;
                 do {
@@ -155,7 +161,7 @@ public class Main {
         int op = 0;
         boolean encontrado = false;
         boolean eliminado = false;
-        for (int i=0;i<1000;i++){
+        for (int i=0;i<TAMANIO_INVENTARIO;i++){
             if(inventario[i].getId().equalsIgnoreCase(articuloAEliminar)) {
                 encontrado = true;
                 System.out.println("""
@@ -176,11 +182,11 @@ public class Main {
                     op = Integer.parseInt(consola.nextLine());
                     switch (op){
                         case 1:
-                            inventario[i].setId("000x0");
-                            inventario[i].setMarca("Vacio");
-                            inventario[i].setNombre("Vacio");
-                            inventario[i].setPrecio(0.0);
-                            inventario[i].setStock(0);
+                            inventario[i].setId(ID_VACIO);
+                            inventario[i].setMarca(NOMBRE_VACIO);
+                            inventario[i].setNombre(NOMBRE_VACIO);
+                            inventario[i].setPrecio(PRECIO_VACIO);
+                            inventario[i].setStock(STOCK_VACIO);
 
                             System.out.println("""
                               ------------------------------
@@ -196,12 +202,12 @@ public class Main {
                             System.out.println("Opción invalida, intente de nuevo...");
                             break;
                     }
-                }while (op!=2 || eliminado == false);
+                }while (op!=2 || !eliminado);
 
                 break;
             }
         }
-        if(encontrado==false){
+        if(!encontrado){
             System.out.println("""
                     ------------------------
                     ¡Articulo no encontrado!
@@ -239,10 +245,10 @@ public class Main {
         do {
             System.out.print("Ingrese el nombre de la marca producto (entre 3 y 50 caracteres): ");
             nombre = consola.nextLine();
-            if (nombre.length() < 2 || nombre.length() > 50) {
+            if (nombre.length() < 2 || nombre.length() > 30) {
                 System.out.println("Nombre inválido. Debe tener entre 3 y 50 caracteres.");
             }
-        } while (nombre.length() < 2 || nombre.length() > 50);
+        } while (nombre.length() < 2 || nombre.length() > 30);
         return nombre;
     }
 
